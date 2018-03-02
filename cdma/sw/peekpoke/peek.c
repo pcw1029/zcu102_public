@@ -40,7 +40,7 @@
 
 void usage(char *prog)
 {
-	printf("usage: %s ADDR\n",prog);
+	printf("usage: %s ADDR Size\n",prog);
 	printf("\n");
 	printf("ADDR may be specified as hex values\n");
 }
@@ -52,8 +52,9 @@ int main(int argc, char *argv[])
 	void *ptr;
 	unsigned addr, page_addr, page_offset;
 	unsigned page_size=sysconf(_SC_PAGESIZE);
+	int size,i;
 
-	if(argc!=2) {
+	if(argc!=3) {
 		usage(argv[0]);
 		exit(-1);
 	}
@@ -65,6 +66,8 @@ int main(int argc, char *argv[])
 	}
 
 	addr=strtoul(argv[1],NULL,0);
+	size = atoi(argv[2]);
+
 	page_addr=(addr & ~(page_size-1));
 	page_offset=addr-page_addr;
 
@@ -73,8 +76,9 @@ int main(int argc, char *argv[])
 		perror(argv[0]);
 		exit(-1);
 	}
-
-	printf("0x%08x\n",*((unsigned *)(ptr+page_offset)));
+	for(i=0; i<size; i++){
+		printf("0x%08x\n",*((unsigned *)(ptr+(i*4)+page_offset)));
+	}
 	return 0;
 }
 
