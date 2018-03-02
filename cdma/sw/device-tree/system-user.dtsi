@@ -1,0 +1,9 @@
+/include/ "system-conf.dtsi"
+/ {
+	cdmatest_0: cdmatest@0 {
+		compatible = "xilinx,cdma-driver";
+		dmas = <&axi_cdma_0 0>;
+		dma-names = "cdma";
+		dma-coherent;
+	};
+};
